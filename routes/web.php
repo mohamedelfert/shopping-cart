@@ -25,3 +25,4 @@ Route::get('/products', 'ProductController@index');
 Route::get('/cartload/{product}', 'ProductController@addToCart')->name('cartload');
 Route::get('/shopping-cart', 'ProductController@shoppingCart')->name('cart.show');
 Route::get('/checkout/{amount}', 'ProductController@checkout')->name('cart.checkout');
+Route::post('/charge', 'ProductController@charge')->name('cart.charge');
