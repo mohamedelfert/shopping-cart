@@ -41,7 +41,7 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('cart.show') }}" class="nav-link">
                         <i class="fas fa-shopping-cart"> My Cart ({{ session()->has('cart') ? session()->get('cart')->totalQty : '0'}}) </i>
                     </a>
 
@@ -86,3 +86,6 @@
 </div>
 </body>
 </html>
+
+@stack('css')
+@stack('js')
