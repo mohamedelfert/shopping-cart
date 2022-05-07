@@ -6,29 +6,24 @@
                 height: 100vh !important;
             }
         }
-
         .card-registration .select-input.form-control[readonly]:not([disabled]) {
             font-size: 1rem;
             line-height: 2.15;
             padding-left: .75em;
             padding-right: .75em;
         }
-
         .card-registration .select-arrow {
             top: 13px;
         }
-
         .bg-grey {
             background-color: #eae8e8;
         }
-
         @media (min-width: 992px) {
             .card-registration-2 .bg-grey {
                 border-top-right-radius: 16px;
                 border-bottom-right-radius: 16px;
             }
         }
-
         @media (max-width: 991px) {
             .card-registration-2 .bg-grey {
                 border-bottom-left-radius: 16px;
@@ -64,17 +59,33 @@
                                                         <div class="col-md-3 col-lg-3 col-xl-3">
                                                             <h6 class="text-muted">{{ $item['title'] }}</h6>
                                                         </div>
-                                                        <div class="col-md-3 col-lg-3 col-xl-3 d-flex">
-                                                            <input id="form1" min="0" name="quantity"
-                                                                   value="{{ $item['qty'] }}" type="number"
-                                                                   class="form-control form-control-sm"/>
-                                                            <button class="btn btn-primary btn-sm ml-2">change</button>
+                                                        <div class="col-md-4 col-lg-4 col-xl-4 d-flex">
+                                                            <form action="{{ route('product.update',$item['id']) }}"
+                                                                  method="post">
+                                                                @csrf
+                                                                @method('put')
+                                                                <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
+                                                                    <input id="form1" min="1" max="100" name="qty"
+                                                                           value="{{ $item['qty'] }}" type="number"
+                                                                           class="form-control form-control-sm"/>
+                                                                    <button class="btn btn-primary btn-sm ml-1"
+                                                                            type="submit">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                        <div class="col-md-2 col-lg-2 col-xl-2">
                                                             <h6 class="mb-0">{{ $item['price'] }} $</h6>
                                                         </div>
                                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+                                                            <form action="{{ route('product.remove',$item['id']) }}"
+                                                                  method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button class="btn btn-danger" type="submit">
+                                                                    <i class="fas fa-times"></i></button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     <hr class="my-4">

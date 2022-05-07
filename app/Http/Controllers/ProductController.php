@@ -23,49 +23,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Product $product
-     * @return Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Product $product
-     * @return Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
@@ -74,7 +31,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $cart = new Cart(session()->get('cart'));
+        $cart->updateQty($product->id, $request->qty);
+        session()->put('cart', $cart);
+        toast('Product updated successfully', 'success');
+        return redirect()->back();
     }
 
     /**
@@ -85,7 +46,15 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $cart = new Cart(session()->get('cart'));
+        $cart->remove($product->id);
+        if ($cart->totalQty <= 0) {
+            session()->forget('cart');
+        } else {
+            session()->put('cart', $cart);
+        }
+        toast('Product removed successfully', 'success');
+        return redirect()->back();
     }
 
     public function addToCart(Product $product)
@@ -97,7 +66,8 @@ class ProductController extends Controller
         }
         $cart->add($product);
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product Added Success');
+        toast('Product added successfully', 'success');
+        return redirect()->back();
     }
 
     public function shoppingCart()
@@ -128,8 +98,11 @@ class ProductController extends Controller
         $chargeId = $charge['id'];
 
         if ($chargeId) {
+            // save data in orders table
+            auth()->user()->orders()->create(['data' => serialize(session()->get('cart'))]);
             session()->forget('cart');
-            return redirect()->route('store')->with('success', 'Payment was done successfully');
+            toast('Payment was done successfully', 'success');
+            return redirect()->route('store');
         } else {
             return redirect()->back();
         }

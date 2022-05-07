@@ -12,15 +12,12 @@
             -webkit-transition: box-shadow 150ms ease;
             transition: box-shadow 150ms ease;
         }
-
         .StripeElement--focus {
             box-shadow: 0 1px 3px 0 #cfd7df;
         }
-
         .StripeElement--invalid {
             border-color: #fa755a;
         }
-
         .StripeElement--webkit-autofill {
             background-color: #fefde5 !important;
         }
@@ -44,12 +41,11 @@
                         <div id="card-element">
                             <!-- A Stripe Element will be inserted here. -->
                         </div>
-
                         <!-- Used to display form errors. -->
                         <div id="card-errors" role="alert"></div>
                     </div>
-
                     <button class="btn btn-primary mt-3">Submit Payment</button>
+                    <p class="alert alert-primary block d-none loading mt-3">Payment In Process! Please Wait...</p>
                 </form>
             </div>
         </div>
@@ -105,7 +101,6 @@
                     }
                 });
             });
-
             function stripeTokenHandler(token) {
                 // Insert the token ID into the form so it gets submitted to the server
                 var form = document.getElementById('payment-form');
@@ -115,6 +110,7 @@
                 hiddenInput.setAttribute('value', token.id);
                 form.appendChild(hiddenInput);
                 // Submit the form
+                $('.loading').removeClass('d-none');
                 form.submit();
             }
         }

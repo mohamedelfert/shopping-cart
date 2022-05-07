@@ -36,13 +36,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('store') }}">Store</a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <a href="{{ route('cart.show') }}" class="nav-link">
-                        <i class="fas fa-shopping-cart"> My Cart ({{ session()->has('cart') ? session()->get('cart')->totalQty : '0'}}) </i>
+                        <i class="fas fa-shopping-cart"> My Cart
+                            ({{ session()->has('cart') ? session()->get('cart')->totalQty : '0'}}) </i>
                     </a>
 
                     <!-- Authentication Links -->
@@ -63,10 +66,14 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('orders') }}">Orders
+                                    <i class="fas fa-grip-horizontal"></i></a>
+                                <hr>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
+                                    <i class="fa fa-sign-out"></i>
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -83,6 +90,8 @@
     <main class="py-4">
         @yield('content')
     </main>
+
+    @include('sweetalert::alert')
 </div>
 </body>
 </html>
