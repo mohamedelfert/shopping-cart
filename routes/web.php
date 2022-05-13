@@ -27,3 +27,9 @@ Route::put('/product/{product}', 'ProductController@update')->name('product.upda
 Route::get('/checkout/{amount}', 'ProductController@checkout')->name('cart.checkout')->middleware('auth');
 Route::get('/orders', 'OrderController@index')->name('orders')->middleware('auth');
 Route::post('/charge', 'ProductController@charge')->name('cart.charge');
+
+
+route::post('processPaypal', 'PaypalController@processPaypal')->name('processPaypal');
+route::get('processSuccess', 'PaypalController@processSuccess')->name('processSuccess');
+route::get('processCancel', 'PaypalController@processCancel')->name('processCancel');
+

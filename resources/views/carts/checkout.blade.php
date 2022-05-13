@@ -12,16 +12,21 @@
             -webkit-transition: box-shadow 150ms ease;
             transition: box-shadow 150ms ease;
         }
+
         .StripeElement--focus {
             box-shadow: 0 1px 3px 0 #cfd7df;
         }
+
         .StripeElement--invalid {
             border-color: #fa755a;
         }
+
         .StripeElement--webkit-autofill {
             background-color: #fefde5 !important;
         }
     </style>
+
+    <script src="https://www.paypal.com/sdk/js?client-id={{env('PAYPAL_SANDBOX_CLIENT_ID')}}"></script>
 @endpush
 @section('content')
     <div class="container">
@@ -30,7 +35,7 @@
                 Total Price Is <strong>$ {{ $amount }}</strong>
             </div>
 
-            <div class="col-lg-12 col-md-12 mt-5">
+            <div class="col-lg-6 col-md-6 mt-5">
                 <form action="{{ route('cart.charge') }}" method="post" id="payment-form">
                     @csrf
                     <div>
@@ -45,6 +50,17 @@
                         <div id="card-errors" role="alert"></div>
                     </div>
                     <button class="btn btn-primary mt-3">Submit Payment</button>
+                    <p class="alert alert-primary block d-none loading mt-3">Payment In Process! Please Wait...</p>
+                </form>
+            </div>
+
+            <div class="col-lg-6 col-md-6 mt-5">
+                <form action="{{ route('processPaypal') }}" method="post">
+                    @csrf
+                    <div>
+                        <input type="hidden" name="amount" value="{{ $amount }}"/>
+                        <button class="btn btn-primary mt-3">Paypal Payment</button>
+                    </div>
                     <p class="alert alert-primary block d-none loading mt-3">Payment In Process! Please Wait...</p>
                 </form>
             </div>
@@ -101,6 +117,7 @@
                     }
                 });
             });
+
             function stripeTokenHandler(token) {
                 // Insert the token ID into the form so it gets submitted to the server
                 var form = document.getElementById('payment-form');
